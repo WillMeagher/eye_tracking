@@ -90,8 +90,8 @@ for i in range(iterations):
 
     evaluation = evaluate(model)
 
-    if evaluation < 4:
-        model.save(config['path'] + 'ml/models/' + str(int(time.time() * 1000)) + '_' + str(format(evaluation,".5f")) + '_model')
+    if evaluation < 3:
+        model.save(config['path'] + 'ml/gaze_estimation/models/' + str(int(time.time() * 1000)) + '_' + str(format(evaluation,".5f")) + '_model')
 
     del model
     gc.collect()
