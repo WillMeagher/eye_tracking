@@ -1,0 +1,3 @@
+[submodule "eye_tracking_device"]
+	path = eye_tracking_device
+	url = https://github.com/WillMeagher/eye_tracking_device.git
