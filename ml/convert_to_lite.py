@@ -5,8 +5,10 @@ import sys
 sys.path.insert(0, '.')
 from config import *
 
+file_folder = input("type ml folder that model is in: ")
+
 in_file = input("type name of model to convert: ")
-saved_model_dir = config['path'] + 'ml/models/' + in_file
+saved_model_dir = config['path'] + 'ml/' + file_folder + '/models/' + in_file
 
 # check if input path is valid
 if not os.path.exists(saved_model_dir):
@@ -23,6 +25,6 @@ tflite_model = converter.convert()
 
 out_file = input("type what to name the file: ")
 
-fo = open(config['path'] + 'ml/models/lite_models/' + out_file + '.tflite', "wb")
+fo = open(config['path'] + 'ml/' + file_folder + '/models/lite_models/' + out_file + '.tflite', "wb")
 fo.write(tflite_model)
 fo.close
