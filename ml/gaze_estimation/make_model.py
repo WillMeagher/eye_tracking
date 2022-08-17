@@ -32,6 +32,29 @@ def evaluate(m):
     return evaluation
 
 
+def get_model():
+    model = keras.Sequential()
+    model.add(Conv2D(1, (3, 3), input_shape=(15, 60, 1)))
+
+    model.add(Flatten())
+
+    model.add(Dense(500, activation= "relu"))
+    model.add(Dropout(.1))
+
+    model.add(Dense(500, activation= "relu"))
+    model.add(Dropout(.1))
+
+    model.add(Dense(100, activation= "relu"))
+
+    model.add(Dense(2, activation= "relu"))
+
+    model.compile(optimizer='adam',
+                loss="mean_squared_error",
+                metrics=["mean_squared_error"])
+
+    return model
+
+
 (X_train, Y_train) = import_data.import_data_train()
 (X_test, Y_test) = import_data.import_data_test()
 
@@ -50,25 +73,7 @@ Y_train_list = np.array_split(Y_train, split_nums)
 
 for i in range(iterations):
 
-    model = keras.Sequential()
-    model.add(Conv2D(1, (3, 3), input_shape=(15, 60, 1)))
-
-    model.add(Flatten())
-
-    model.add(Dense(500, activation= "relu"))
-    model.add(Dropout(.3))
-
-    model.add(Dense(500, activation= "relu"))
-    model.add(Dropout(.3))
-
-    model.add(Dense(100, activation= "relu"))
-
-    model.add(Dense(2, activation= "relu"))
-
-    model.compile(optimizer='adam',
-                loss="mean_squared_error",
-                metrics=["mean_squared_error"])
-
+    model = get_model()
 
     for i in range(epochs):
         print("Epoch " + str(i + 1))
