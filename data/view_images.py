@@ -6,7 +6,7 @@ sys.path.insert(0, '.')
 from config import *
 
 file = input("type name of img folder in data: ")
-file_path = config['path'] + "data/"  + file
+file_path = config['path'] + "data/data/"  + file
 
 # check if path is valid
 if not os.path.exists(file_path):

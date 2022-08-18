@@ -11,11 +11,11 @@ from config import *
 file = input("type name of filtered folder: ")
 
 # get full file path
-filtered_file_path = config['path'] + "data/filtered/" + file
+filtered_file_path = config['path'] + "data/data/filtered/" + file
 
 # get ouptut file path
 file = input("type name of file to put images: ")
-processed_file_path = config['path'] + "data/" + file + "/"
+processed_file_path = config['path'] + "data/data/" + file + "/"
 
 # check if input path is valid
 if not os.path.exists(filtered_file_path + "/captures/"):

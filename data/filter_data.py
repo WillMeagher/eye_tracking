@@ -32,8 +32,8 @@ def update_orientation_data(orientation_file):
 # get folder to go through
 file = input("type name of raw folder: ")
 
-raw_file_path = config['path'] + "data/raw/"  + file
-filtered_file_path = config['path'] + "data/filtered/" + file
+raw_file_path = config['path'] + "data/data/raw/"  + file
+filtered_file_path = config['path'] + "data/data/filtered/" + file
 
 # check if path is valid
 if not os.path.exists(raw_file_path + "/captures/"):

@@ -7,8 +7,8 @@ import sys
 sys.path.insert(0, '.')
 from config import *
 
-data_path = config['path'] + "data/processed/"
-export_path = config['path'] + "data/final"
+data_path = config['path'] + "data/data/processed/"
+export_path = config['path'] + "data/data/final"
 
 def get_components(picture, flipLR=False, brightnessAlpha=1, brightnessBeta=0, shiftLR=0, shiftUD=0):
     

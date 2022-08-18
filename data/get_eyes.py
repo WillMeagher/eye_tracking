@@ -19,8 +19,8 @@ def main():
     # get folder to go through
     file = input("type name of raw folder: ")
 
-    raw_file_path = config['path'] + "data/raw/"  + file
-    eyes_file_path = config['path'] + "data/eyes/"
+    raw_file_path = config['path'] + "data/data/raw/"  + file
+    eyes_file_path = config['path'] + "data/data/eyes/"
 
     # check if path is valid
     if not os.path.exists(raw_file_path + "/captures/"):
