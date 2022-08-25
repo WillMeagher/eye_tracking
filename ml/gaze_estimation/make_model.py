@@ -10,19 +10,20 @@ import sys
 sys.path.insert(0, '.')
 from config import *
 
-epochs = 5
-iterations = 2000
+sys.path.insert(0, './ml')
+from train_model import train_model
+
 # os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
-def distance_between(v1, v2):
-    return math.sqrt((v1[0] - v2[0]) ** 2 + (v1[1] - v2[1]) ** 2)
 
+def evaluate(model, X, Y):
+    def distance_between(v1, v2):
+        return math.sqrt((v1[0] - v2[0]) ** 2 + (v1[1] - v2[1]) ** 2)
 
-def evaluate(m):
-    predictions = m.predict(X_test)
+    predictions = model.predict(X)
     results = []
     for i in range(len(predictions)):
-        distance = distance_between(predictions[i], Y_test[i]) * 90
+        distance = distance_between(predictions[i], Y[i]) * 90
         results.append(distance)
 
     results = np.array(results)
@@ -55,43 +56,25 @@ def get_model():
     return model
 
 
-(X_train, Y_train) = import_data.import_data('train')
-(X_test, Y_test) = import_data.import_data('test')
+def main():
+    model_shape = get_model()
+    epochs = 5
+    min_continue = 30
+    min_save = 3
+    this_file_path = 'ml/gaze_estimation/models/'
 
-X_train = np.array(X_train).astype('float32')
-Y_train = np.array(Y_train).astype('float32')
-X_test = np.array(X_test).astype('float32')
-Y_test = np.array(Y_test).astype('float32')
+    (X_train, Y_train) = import_data.import_data('train')
+    (X_test, Y_test) = import_data.import_data('test')
 
-split_nums = 1
+    while True:
+        new_model, eval = train_model(model_shape, evaluate, X_train, Y_train, X_test, Y_test, epochs, min_continue)
+        
+        if eval < min_save:
+            new_model.save(config['path'] + this_file_path + str(int(time.time() * 1000)) + '_' + str(format(eval,".5f")) + '_model')
 
-while len(X_train) / split_nums > 300000:
-    split_nums += 1
+        del new_model
+        gc.collect()
 
-X_train_list = np.array_split(X_train, split_nums)
-Y_train_list = np.array_split(Y_train, split_nums)
 
-for i in range(iterations):
-
-    model = get_model()
-
-    for i in range(epochs):
-        print("Epoch " + str(i + 1))
-        for j in range(len(X_train_list)):
-            model.fit(X_train_list[j], Y_train_list[j], epochs=1, batch_size=256)
-            gc.collect()
-        evaluation = evaluate(model)
-
-        # exit if model isnt learning
-        if evaluation > 30:
-            break
-
-    model.summary()
-
-    evaluation = evaluate(model)
-
-    if evaluation < 3:
-        model.save(config['path'] + 'ml/gaze_estimation/models/' + str(int(time.time() * 1000)) + '_' + str(format(evaluation,".5f")) + '_model')
-
-    del model
-    gc.collect()
+if __name__ == '__main__':
+    main()
