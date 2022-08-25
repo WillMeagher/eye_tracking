@@ -55,8 +55,8 @@ def get_model():
     return model
 
 
-(X_train, Y_train) = import_data.import_data_train()
-(X_test, Y_test) = import_data.import_data_test()
+(X_train, Y_train) = import_data.import_data('train')
+(X_test, Y_test) = import_data.import_data('test')
 
 X_train = np.array(X_train).astype('float32')
 Y_train = np.array(Y_train).astype('float32')

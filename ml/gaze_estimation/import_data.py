@@ -1,24 +1,34 @@
 import numpy as np
+import os
 
 import sys
 sys.path.insert(0, '.')
 from config import *
 
-data_path = config['path'] + "data/final"
-data_path_2 = config['path'] + "data/final_2"
+# get folder to go through
+data_file = input("type name of data folder: ")
+data_file_path = config['path'] + "data/data/" + data_file
+# check if input path is valid
+if not os.path.exists(data_file_path):
+    print("invalid path")
+    exit()
 
-def import_data_train():
-    training_data = np.load(data_path + '/train.npz')
 
-    return np.array(training_data['a']), np.array(training_data['b'])
+def import_data(type="train"):
+    features = []
+    labels = []
 
-def import_data_test():
-    testing_data = np.load(data_path_2 + '/test.npz')
+    for file_name in os.listdir(data_file_path):
+        if file_name.split("_")[0] == type:
+            training_data = np.load(data_file_path + "/" + file_name)
+            features.extend(np.array(training_data['a']))
+            labels.extend(np.array(training_data['b']))
 
-    return np.array(testing_data['a']), np.array(testing_data['b'])
+    return np.array(features), np.array(labels)
+
 
 def main():
-    picture_data, label_data = import_data_train()
+    picture_data, label_data = import_data()
     print(picture_data, label_data)
 
 if __name__ == "__main__":
