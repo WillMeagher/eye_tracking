@@ -7,7 +7,7 @@ from config import *
 
 # get folder to go through
 data_file = input("type name of data folder: ")
-data_file_path = config['path'] + "data/data/" + data_file
+data_file_path = config['path'] + "data/data/final/" + data_file
 # check if input path is valid
 if not os.path.exists(data_file_path):
     print("invalid path")

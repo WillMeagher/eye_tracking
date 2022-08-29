@@ -207,7 +207,7 @@ def main():
 
     # get ouptut file path
     file = input("type name of folder to put images: ")
-    processed_file_path = config['path'] + "data/data/" + file + "/"
+    processed_file_path = config['path'] + "data/data/final/" + file + "/"
     # make output if not exists
     if not os.path.exists(processed_file_path):
         os.makedirs(processed_file_path)
