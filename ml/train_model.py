@@ -30,6 +30,7 @@ def train_model(model, evaluate_function, X_train, Y_train, X_test, Y_test, epoc
         evaluation = evaluate_function(model, X_test, Y_test)
         if evaluation > min_continue:
             break
+        evaluate_function(model, X_train[:5000], Y_train[:5000])
 
     return model, evaluation
     
