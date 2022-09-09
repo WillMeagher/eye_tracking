@@ -1,5 +1,6 @@
 import numpy as np
 import os
+import random
 
 import sys
 sys.path.insert(0, '.')
@@ -23,6 +24,12 @@ def import_data(type="train"):
             training_data = np.load(data_file_path + "/" + file_name)
             features.extend(np.array(training_data['a']))
             labels.extend(np.array(training_data['b']))
+
+    seed = random.random()
+    random.seed(seed)
+    random.shuffle(features)
+    random.seed(seed)
+    random.shuffle(labels)
 
     return np.array(features), np.array(labels)
 
