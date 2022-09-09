@@ -1,7 +1,6 @@
 import cv2
 import os
 import numpy as np
-import distortion
 
 import sys
 sys.path.insert(0, '.')
@@ -43,17 +42,18 @@ if not os.path.exists(raw_file_path + "/captures/"):
 # copy over files if it hasnt been done already
 if not os.path.exists(filtered_file_path + "/captures/"):
     os.makedirs(filtered_file_path + "/captures/")
-    old = open(raw_file_path + '/orientation_data.txt', 'r')
-    new = open(filtered_file_path + '/orientation_data.txt', 'w')
+    if os.path.exists(raw_file_path + '/orientation_data.txt'):
+        old = open(raw_file_path + '/orientation_data.txt', 'r')
+        new = open(filtered_file_path + '/orientation_data.txt', 'w')
 
-    # update and filter orientation data
-    new_ori_data = update_orientation_data(old)
+        # update and filter orientation data
+        new_ori_data = update_orientation_data(old)
 
-    for line in new_ori_data:
-        new.write(line + "\n")
+        for line in new_ori_data:
+            new.write(line + "\n")
 
-    old.close()
-    new.close()
+        old.close()
+        new.close()
 
 images = os.listdir(raw_file_path + "/captures/")
 i = 0
