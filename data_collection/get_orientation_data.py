@@ -171,6 +171,11 @@ parameters = aruco.DetectorParameters_create()
 
 f = open(config['path'] + "data_collection/orientation_data.txt", "a")
 
+CALIBRATION_POINTS = 100
+calibration_walls = []
+calibration_w_rolls = []
+wall, w_roll = None, None
+
 while cap.isOpened():
 
     # Capture frame-by-frame
@@ -182,10 +187,19 @@ while cap.isOpened():
 
     corners, ids, _ = aruco.detectMarkers(frame, aruco_dict, parameters=parameters, cameraMatrix=CAMERAMATRIX, distCoeff=DISTORTIONCOEFFICIENTS)
 
-    glasses, g_roll = getGlassesAngle(corners, ids)
-    wall, w_roll = getWallAngle(corners, ids)
+    if len(calibration_walls) < CALIBRATION_POINTS:
+        temp_wall, temp_w_roll = getWallAngle(corners, ids)
+        if temp_wall is not None:
+            calibration_walls.append(temp_wall)
+            calibration_w_rolls.append(temp_w_roll)
+        continue
+    elif wall is None:
+        wall = np.mean(calibration_walls, axis=0)
+        w_roll = np.mean(calibration_w_rolls, axis=0)
 
-    if wall is not None and glasses is not None:
+    glasses, g_roll = getGlassesAngle(corners, ids)
+
+    if glasses is not None:
         glasses = unit_vector(glasses)
         wall = unit_vector(wall)
 
