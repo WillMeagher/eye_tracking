@@ -1,7 +1,6 @@
 from tensorflow import keras
 import numpy as np
 from tensorflow.keras.layers import Dense, Dropout, Flatten, MaxPooling2D, Conv2D
-import import_data
 import time
 import math
 import gc
@@ -12,6 +11,7 @@ from config import *
 
 sys.path.insert(0, './ml')
 from train_model import train_model
+from import_data import import_data
 
 # os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
@@ -37,17 +37,19 @@ def get_model():
     model = keras.Sequential()
     model.add(Conv2D(1, (3, 3), input_shape=(15, 60, 1)))
 
+    model.add(Dropout(.2))
+
     model.add(Flatten())
 
     model.add(Dense(500, activation= "relu"))
-    model.add(Dropout(.1))
+    model.add(Dropout(.2))
 
     model.add(Dense(500, activation= "relu"))
-    model.add(Dropout(.1))
+    model.add(Dropout(.2))
 
-    model.add(Dense(100, activation= "relu"))
+    model.add(Dense(100, activation= "sigmoid"))
 
-    model.add(Dense(2, activation= "relu"))
+    model.add(Dense(2, activation= "sigmoid"))
 
     model.compile(optimizer='adam',
                 loss="mean_squared_error",
@@ -57,16 +59,16 @@ def get_model():
 
 
 def main():
-    model_shape = get_model()
-    epochs = 5
-    min_continue = 30
-    min_save = 3
+    epochs = 3
+    min_continue = 10
+    min_save = 2.8
     this_file_path = 'ml/gaze_estimation/models/'
 
-    (X_train, Y_train) = import_data.import_data('train')
-    (X_test, Y_test) = import_data.import_data('test')
+    (X_train, Y_train) = import_data('train')
+    (X_test, Y_test) = import_data('test')
 
     while True:
+        model_shape = get_model()
         new_model, eval = train_model(model_shape, evaluate, X_train, Y_train, X_test, Y_test, epochs, min_continue)
         
         if eval < min_save:

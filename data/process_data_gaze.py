@@ -61,7 +61,7 @@ def process(filtered_file_path):
         left, right = get_eyes(img)
         eyes = np.concatenate((left, right), axis=1)
 
-        eyes = cv2.resize(eyes, (0,0), fx=0.2, fy=0.2)
+        # eyes = cv2.resize(eyes, (0,0), fx=0.2, fy=0.2)
         
         # cv2.imshow('eyes', eyes)
         # cv2.waitKey(0)
@@ -151,11 +151,11 @@ def get_augmented_train(features, labels):
     feature_data = []
     label_data = []
 
-    brightnessAlphas = [.8, 1, 1.2]
-    brightnessBetas = [0]
+    brightnessAlphas = [1]
+    brightnessBetas = [-15, 0, 15]
     flipLRs = [True, False]
-    shiftLRs = [-2, 0, 2]
-    shiftUDs = [-2, 0, 2]
+    shiftLRs = [0]
+    shiftUDs = [-3, 0, 3]
 
     num_train_pics = len(features) * len(brightnessAlphas) * len(brightnessBetas) * len(flipLRs) * len(shiftLRs) * len(shiftUDs)
     counter = 0
